@@ -22,20 +22,7 @@ A small Chrome extension that lets you toggle other extensions on and off quickl
 2. Turn on **Developer mode** (top-right toggle). On desktop Chrome, you'll see a switch labeled "Developer mode" — flip it on. This enables the "Load unpacked" button and extra diagnostics.
 3. Click "Load unpacked" and select the directory for this project (the folder that contains `manifest.json`).
 4. The extension should appear in your list. If it is a fresh install, the Options page may open to let you choose a target extension.
-
 Note: Developer mode is only required for loading unpacked extensions during development. It is not required for production installs from the Chrome Web Store.
-
-#### Enable Developer mode (step-by-step)
-
-1. Open Chrome and navigate to chrome://extensions.
-2. Locate the **Developer mode** toggle at the top-right of the page and enable it.
-3. Once enabled you'll see buttons like "Load unpacked" and "Pack extension".
-
-#### How to load this extension (Load unpacked)
-
-1. With Developer mode enabled on chrome://extensions, click the "Load unpacked" button.
-2. In the file picker, choose the extension folder (the root of this repo — the folder that contains `manifest.json`, `popup.html`, `background.js`, etc.).
-3. After loading, you should see the extension in the list. If you see errors, open the extension's details to view the error message.
 
 ## How to use
 
