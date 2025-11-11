@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Extension Toggle Switch – Options</title>
+    <link rel="stylesheet" href="options.css">
+  </head>
+  <body>
+    <div class="card">
+      <h1>Extension Toggle Switch</h1>
+      <ul>
+        <li>Open <code>chrome://extensions</code> and enable developer options.</li>
+        <li>This might fix various errors or glitches.</li>
+      </ul>
+
+      <form id="settingsForm">
+        <div class="form-grid">
+          <div class="row">
+            <label for="popupSort">Default popup sort</label>
+            <select id="popupSort">
+              <option value="name_asc">Name (A → Z)</option>
+              <option value="name_desc">Name (Z → A)</option>
+              <option value="enabled_first">Enabled first</option>
+              <option value="pinned_first">Default</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label for="onlyPinnedVisibleSelect">Show only pinned in popup</label>
+            <select id="onlyPinnedVisibleSelect">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label>Pinned and hidden extensions</label>
+          <div id="pinList" class="pin-list">Loading…</div>
+        </div>
+        <div class="buttons">
+          <a href="chrome://extensions" target="_blank" class="link">Open chrome://extensions</a>
+        </div>
+
+        <div id="status"></div>
+      </form>
+    </div>
+
+    <script src="options.js"></script>
+  </body>
+</html>

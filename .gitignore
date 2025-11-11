@@ -1,0 +1,5 @@
+ArchiveOldVersion.zip
+*.log
+temp/
+.DS_Store
+icons/.DS_Store

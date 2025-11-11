@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Toggle Extensions</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <div class="card">
+      <div class="topbar">
+        <h2>Extension Toggle</h2>
+        <div class="top-actions">
+          <button id="refresh" class="iconBtn" title="Refresh" aria-label="Refresh">
+            <img src="icons/refresh.svg" alt="" />
+          </button>
+          <button id="openOptions" class="iconBtn" title="Options" aria-label="Options">
+            <img src="icons/settings.svg" alt="" />
+          </button>
+        </div>
+      </div>
+
+      <section id="pinnedSection">
+        <h3 id="pinnedHeading">Pinned</h3>
+        <div id="pinnedList" class="list empty"></div>
+      </section>
+
+      <section>
+        <h3 id="allHeading">All extensions</h3>
+        <div id="allList" class="list empty">Loading…</div>
+      </section>
+
+      <div id="status" class="status"></div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
