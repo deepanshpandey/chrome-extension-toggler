@@ -1,26 +1,25 @@
 # Extension Toggle Switch
----
+
 A small Chrome extension that lets you toggle other extensions on and off quickly from a popup and manage a pinned list from the Options page.
 
-#### At a glance
+## At a glance
 
 - Name: Extension Toggle Switch
 - Version: 1.0.0
 - Purpose: Quickly enable/disable installed extensions and maintain a pinned list for easy access.
 - Key permissions: management (to list/enable/disable extensions), storage (to persist preferences)
 
-#### Features
+## Features
 
 - One-click enable/disable per extension from the popup UI.
 - Pin extensions (from Options) so they appear separately in the popup.
 - Hide extensions from the popup list if desired.
 - Options page to choose default sorting and visibility settings.
 
-### Install & load (Developer / local install)
+### Quick Install & load (Developer / local install)
 
 1. Open Chrome and go to chrome://extensions.
-2. Turn on **Developer mode** (top-right toggle).
-	- On desktop Chrome, you'll see a switch labeled "Developer mode" — flip it on. This enables the "Load unpacked" button and extra diagnostics.
+2. Turn on **Developer mode** (top-right toggle). On desktop Chrome, you'll see a switch labeled "Developer mode" — flip it on. This enables the "Load unpacked" button and extra diagnostics.
 3. Click "Load unpacked" and select the directory for this project (the folder that contains `manifest.json`).
 4. The extension should appear in your list. If it is a fresh install, the Options page may open to let you choose a target extension.
 
@@ -44,9 +43,10 @@ Note: Developer mode is only required for loading unpacked extensions during dev
 2. The popup displays two sections: Pinned and All extensions. Use the toggle next to any extension to enable or disable it.
 3. To manage pins/hidden items and default popup behaviour, open the Options page (via the popup's Options button or from chrome://extensions → Details → Extension options).
 
-
 ---
-## Pro Tip:
+
+## Pro Tip
+
 **Pin this extension to the toolbar for quicker access (click the puzzle icon in the toolbar and then the pin icon next to this extension).**
 
 ---
@@ -79,6 +79,3 @@ These permissions are declared in `manifest.json` and are necessary for the exte
 ### Contributing
 
 Small changes, bug fixes and UX improvements are welcome. If you add features that require more or different permissions, update `manifest.json` accordingly.
-
----
-
