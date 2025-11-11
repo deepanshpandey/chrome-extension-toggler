@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Extension Toggle Switch",
-  "description": "One-click ON/OFF toggle for any specific extension (select from Options). No popup.",
+  "description": "Toggle other extensions on/off quickly from a popup and manage a pinned list from the Options page.",
   "version": "1.0.0",
   "permissions": [
     "management",
