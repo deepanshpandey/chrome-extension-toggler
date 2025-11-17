@@ -9,13 +9,30 @@
   <body>
     <div class="card">
       <div class="topbar">
-        <h2>Extension Toggle</h2>
+        <div class="search-container">
+          <input type="text" id="searchInput" placeholder="Search extensions..." />
+        </div>
         <div class="top-actions">
           <button id="refresh" class="iconBtn" title="Refresh" aria-label="Refresh">
             <img src="icons/refresh.svg" alt="" />
           </button>
           <button id="openOptions" class="iconBtn" title="Options" aria-label="Options">
             <img src="icons/settings.svg" alt="" />
+          </button>
+        </div>
+      </div>
+
+      <div class="profiles-bar">
+        <label class="profiles-label" for="profileSelect">Extension profile</label>
+        <select id="profileSelect">
+          <option value="">Select Profile</option>
+        </select>
+        <div class="profile-actions">
+          <button id="applyProfile" class="iconBtn" title="Apply Profile" aria-label="Apply Profile">
+            <img src="icons/apply.svg" alt="" />
+          </button>
+          <button id="saveProfile" class="iconBtn" title="Save Profile" aria-label="Save Profile">
+            <img src="icons/save.svg" alt="" />
           </button>
         </div>
       </div>

@@ -19,20 +19,90 @@ body {
 }
 
 .topbar {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto;
     align-items: center;
-    justify-content: space-between;
+    column-gap: 8px;
     margin-bottom: 8px;
 }
 
-h2 {
-    margin: 0;
-    font-size: 16px;
+.search-container {
+    min-width: 0;
+}
+
+#searchInput {
+    width: 100%;
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #3c3c3c;
+    color: #c7c7c7;
+    font-size: 13px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#searchInput::placeholder {
+    color: #999;
+}
+
+#profileSelect {
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #3c3c3c;
+    color: #c7c7c7;
+    font-size: 13px;
 }
 
 .top-actions {
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
+.topbar h2 {
+    margin: 0;
+    font-size: 14px;
+    flex: 0 0 auto;
+}
+
+/* removed duplicate .top-actions rule to avoid overrides */
+
+.profiles-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 8px;
+    margin: 6px 0 2px;
+}
+
+.profiles-label {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.profiles-bar select#profileSelect {
+    height: 28px;
+    padding: 0 8px;
+    border: 1px solid #555;
+    border-radius: 6px;
+    background: #3c3c3c;
+    color: #c7c7c7;
+    font-size: 13px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 button.iconBtn {

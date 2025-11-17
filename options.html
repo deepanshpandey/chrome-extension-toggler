@@ -35,9 +35,39 @@
         </div>
 
         <div class="row">
-          <label>Pinned and hidden extensions</label>
-          <div id="pinList" class="pin-list">Loading…</div>
+          <div class="options-toolbar">
+            <input id="optionsSearch" class="options-search" type="text" placeholder="Search extensions..." />
+            <label class="checkbox-inline" for="hideDisabledToggle">
+              <input type="checkbox" id="hideDisabledToggle" /> Hide disabled
+            </label>
+          </div>
         </div>
+
+        <div class="row">
+          <label>Extensions</label>
+          <div id="extList" class="pin-list">Loading…</div>
+        </div>
+
+        <div class="row">
+          <label>Extension Profiles</label>
+          <div class="profiles-bar">
+            <label class="profiles-label" for="optProfileSelect">Extension profile</label>
+            <select id="optProfileSelect">
+              <option value="">Select Profile</option>
+            </select>
+            <div class="profile-actions">
+              <button id="optApplyProfileBtn" class="iconBtn" title="Apply Profile" aria-label="Apply Profile">
+                <img src="icons/apply.svg" alt="" />
+              </button>
+              <button id="optSaveProfileBtn" class="iconBtn" title="Save Profile" aria-label="Save Profile">
+                <img src="icons/save.svg" alt="" />
+              </button>
+              <button id="optAddProfileBtn" class="btn" type="button" title="Add new profile">Add</button>
+              <button id="optDeleteProfileBtn" class="btn danger" type="button" title="Delete selected profile">Delete</button>
+            </div>
+          </div>
+        </div>
+
         <div class="buttons">
           <a href="chrome://extensions" target="_blank" class="link">Open chrome://extensions</a>
         </div>

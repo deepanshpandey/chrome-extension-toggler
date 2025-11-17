@@ -15,6 +15,9 @@ A small Chrome extension that lets you toggle other extensions on and off quickl
 - Pin extensions (from Options) so they appear separately in the popup.
 - Hide extensions from the popup list if desired.
 - Options page to choose default sorting and visibility settings.
+- Profiles: a "Default" profile is created automatically from your current extension states; you can save, apply, and delete additional profiles.
+- Search extensions in the popup by name or ID.
+- Save and apply extension profiles for different setups (e.g., Work, Personal).
 
 ### Quick Install & load (Developer / local install)
 
@@ -28,7 +31,10 @@ Note: Developer mode is only required for loading unpacked extensions in our cas
 
 1. Click the extension action (toolbar icon) to open the popup.
 2. The popup displays two sections: Pinned and All extensions. Use the toggle next to any extension to enable or disable it.
-3. To manage pins/hidden items and default popup behaviour, open the Options page (via the popup's Options button or from chrome://extensions → Details → Extension options).
+3. Use the search bar to filter extensions by name or ID.
+4. A "Default" profile (captured from your current setup) is available automatically. Select a profile and click Apply to switch extension states.
+5. Click Save Profile to save the current setup as a new profile.
+6. To manage pins/hidden items, profiles, and default popup behaviour, open the Options page (via the popup's Options button or from chrome://extensions → Details → Extension options).
 
 ---
 
@@ -43,6 +49,7 @@ Note: Developer mode is only required for loading unpacked extensions in our cas
 - Set popup sorting (Name, Enabled first, Pinned first).
 - Toggle whether the popup shows only pinned extensions.
 - Pin/unpin or hide extensions from the listing (stored using chrome.storage.sync).
+- Manage extension profiles: save current states, apply, or delete profiles.
 
 ### Permissions used
 

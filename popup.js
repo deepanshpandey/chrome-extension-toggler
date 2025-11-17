@@ -1,5 +1,7 @@
 const $ = id => document.getElementById(id);
 
+const DEFAULT_PROFILE_NAME = 'Default';
+
 async function getPinned() {
   const { pinnedExtensionIds } = await chrome.storage.sync.get({ pinnedExtensionIds: [] });
   return Array.isArray(pinnedExtensionIds) ? pinnedExtensionIds : [];
@@ -92,9 +94,81 @@ async function loadPopupSettings() {
   return popupSettings || { height: 400, sort: 'name_asc', onlyPinnedVisible: false };
 }
 
+// Hidden list helper (restored)
 async function getHidden() {
   const { hiddenExtensionIds } = await chrome.storage.sync.get({ hiddenExtensionIds: [] });
   return Array.isArray(hiddenExtensionIds) ? hiddenExtensionIds : [];
+}
+
+async function getProfiles() {
+  const { profiles } = await chrome.storage.sync.get({ profiles: {} });
+  return profiles || {};
+}
+
+async function setProfiles(profiles) {
+  await chrome.storage.sync.set({ profiles });
+}
+
+async function saveProfile(name) {
+  const items = await chrome.management.getAll();
+  const state = {};
+  for (const item of items) {
+    if (item.id !== chrome.runtime.id && (item.type === 'extension' || item.type === 'theme' || item.type === 'packaged_app' || item.type === 'hosted_app')) {
+      state[item.id] = item.enabled;
+    }
+  }
+  const profiles = await getProfiles();
+  profiles[name] = state;
+  await setProfiles(profiles);
+}
+
+async function applyProfile(name) {
+  const profiles = await getProfiles();
+  const state = profiles[name];
+  if (!state) return;
+  for (const [id, enabled] of Object.entries(state)) {
+    try {
+      await chrome.management.setEnabled(id, enabled);
+    } catch (e) {
+      console.warn('Failed to set', id, e);
+    }
+  }
+}
+
+async function loadProfilesIntoSelect() {
+  const select = $('profileSelect');
+  select.innerHTML = '<option value="">Select Profile</option>';
+  const profiles = await getProfiles();
+  for (const name of Object.keys(profiles)) {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    select.appendChild(option);
+  }
+  if (profiles[DEFAULT_PROFILE_NAME] && !select.value) {
+    select.value = DEFAULT_PROFILE_NAME;
+  }
+}
+
+async function captureCurrentExtensionState() {
+  const items = await chrome.management.getAll();
+  const state = {};
+  for (const item of items) {
+    if (item.id !== chrome.runtime.id && (item.type === 'extension' || item.type === 'theme' || item.type === 'packaged_app' || item.type === 'hosted_app')) {
+      state[item.id] = !!item.enabled;
+    }
+  }
+  return state;
+}
+
+async function ensureDefaultProfileExists() {
+  const { profiles } = await chrome.storage.sync.get({ profiles: {} });
+  const map = profiles || {};
+  if (!map[DEFAULT_PROFILE_NAME]) {
+    const snapshot = await captureCurrentExtensionState();
+    map[DEFAULT_PROFILE_NAME] = snapshot;
+    await chrome.storage.sync.set({ profiles: map });
+  }
 }
 
 
@@ -111,7 +185,7 @@ function sortItems(items, popupSort, pinnedSet) {
   return items;
 }
 
-async function buildLists() {
+async function buildLists(searchTerm = '') {
   const allList = $("allList");
   const pinnedListEl = $("pinnedList");
   allList.innerHTML = '';
@@ -135,6 +209,12 @@ async function buildLists() {
   items = items.filter(i => i.id !== chrome.runtime.id && (i.type === 'extension' || i.type === 'theme' || i.type === 'packaged_app' || i.type === 'hosted_app'));
   const hiddenSet = new Set(hiddenIds);
   items = items.filter(i => !hiddenSet.has(i.id));
+
+  // Apply search filter
+  if (searchTerm) {
+    const term = searchTerm.toLowerCase();
+    items = items.filter(i => (i.name || '').toLowerCase().includes(term) || i.id.toLowerCase().includes(term));
+  }
 
   const pinnedSet = new Set(pinnedIds);
 
@@ -225,6 +305,8 @@ async function buildLists() {
   }
 }
 
+let currentSearchTerm = '';
+
 let refreshInProgress = false;
 let refreshQueued = false;
 let refreshTimer = null;
@@ -236,7 +318,7 @@ async function refresh() {
   refreshInProgress = true;
   do {
     refreshQueued = false;
-    await buildLists();
+    await buildLists(currentSearchTerm);
   } while (refreshQueued);
   refreshInProgress = false;
 }
@@ -257,15 +339,54 @@ function suppressManagementRefresh(id, timeoutMs = 800) {
   setTimeout(() => suppressedIds.delete(id), timeoutMs);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await ensureDefaultProfileExists();
+  await loadProfilesIntoSelect();
   $("refresh").addEventListener('click', refresh);
   $("openOptions").addEventListener('click', () => chrome.runtime.openOptionsPage());
+
+  // Search
+  const searchInput = $('searchInput');
+  searchInput.addEventListener('input', () => {
+    currentSearchTerm = searchInput.value.trim();
+    requestRefresh(200);
+  });
+
+  // Profiles
+  $('applyProfile').addEventListener('click', async () => {
+    const select = $('profileSelect');
+    const name = select.value;
+    if (!name) return;
+    try {
+      await applyProfile(name);
+      setStatus('Profile applied: ' + name);
+      requestRefresh();
+    } catch (e) {
+      setStatus('Failed to apply profile: ' + String(e));
+    }
+  });
+
+  $('saveProfile').addEventListener('click', async () => {
+    const name = prompt('Enter profile name:');
+    if (!name || !name.trim()) return;
+    try {
+      await saveProfile(name.trim());
+      await loadProfilesIntoSelect();
+      setStatus('Profile saved: ' + name);
+    } catch (e) {
+      setStatus('Failed to save profile: ' + String(e));
+    }
+  });
+
   refresh();
 
 
   // react to storage and management events to keep UI in sync
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'sync' && (changes.pinnedExtensionIds || changes.popupSettings)) requestRefresh();
+    if (area === 'sync' && (changes.pinnedExtensionIds || changes.popupSettings || changes.profiles)) {
+      if (changes.profiles) loadProfilesIntoSelect();
+      requestRefresh();
+    }
   });
   const onMgmtChange = (info) => {
     if (info && suppressedIds.has(info.id)) return; // skip flicker-causing immediate refresh

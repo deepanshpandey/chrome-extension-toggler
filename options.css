@@ -34,82 +34,162 @@ ol {
   gap: 16px 24px;
 }
 
-#pinList.pin-list {
+.options-toolbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 12px;
+}
+
+.options-search {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #3c3c3c;
+  border-radius: 10px;
+  background: #3c3c3c;
+  color: #c7c7c7;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+#extList.pin-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 8px 16px;
   margin-top: 4px;
 }
 
-#pinList.pin-list .pin-row {
+#extList.pin-list .pin-row {
   background: #3c3c3c;
   border: 1px solid #3c3c3c;
   border-radius: 10px;
   padding: 8px 10px !important;
   transition: background 0.15s ease, border-color .15s ease;
   display: grid;
-  grid-template-columns: auto 24px 1fr auto;
+  grid-template-columns: 24px 1fr auto;
   align-items: center;
   column-gap: 10px;
 }
 
-#pinList.pin-list .pin-row:hover {
-  background: #3c3c3c;
-  border-color: #3c3c3c;
-}
-
-#pinList.pin-list img {
+#extList.pin-list img {
   width: 24px;
   height: 24px;
 }
 
-#pinList.pin-list input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
+#extList.pin-list .title {
+  font-size: 14px;
 }
 
-#pinList.pin-list .row-actions {
+.row-actions {
   display: flex;
   gap: 10px;
   align-items: center;
 }
 
-#pinList.pin-list .row-actions label {
-  display: flex;
+/* Profiles bar styling (match popup look) */
+.profiles-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: 0;
-  padding: 0 !important;
+  column-gap: 12px;
 }
 
-#pinList.pin-list .title {
-  font-size: 14px;
+.profiles-label {
+  font-size: 13px;
+  opacity: 0.9;
 }
+
+.profiles-bar select#optProfileSelect {
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid #3c3c3c;
+  border-radius: 10px;
+  background: #3c3c3c;
+  color: #c7c7c7;
+  font-size: 14px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+button.iconBtn {
+  width: 32px;
+  height: 32px;
+  padding: 6px;
+  border-radius: 10px;
+  border: 0;
+  background: #3c3c3c;
+  color: #c7c7c7;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+button.iconBtn:hover { background: #3a3a3a; }
+button.iconBtn img { width: 18px; height: 18px; display: block; }
+
+/* Text buttons for Add/Delete */
+.btn {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid #3c3c3c;
+  border-radius: 10px;
+  background: #3c3c3c;
+  color: #c7c7c7;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:hover { background: #3a3a3a; }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn.danger { border-color: #5a2f2f; background: #3a2a2a; }
+.btn.danger:hover { background: #422f2f; }
+
+/* icon buttons for pin/hide */
+.rowIconBtn {
+  width: 28px;
+  height: 28px;
+  padding: 4px;
+  border-radius: 6px;
+  border: 0;
+  background: #3c3c3c;
+  color: #c7c7c7;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.rowIconBtn img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+/* slightly transparent when off (unpinned/unhidden) */
+.rowIconBtn.is-off img { opacity: 0.55; }
+.rowIconBtn:hover img { opacity: 1; }
 
 /* Responsive tweaks */
 @media (max-width: 780px) {
-  .card {
-    padding: 20px 20px;
-  }
-
-  .form-grid {
-    grid-template-columns: 1fr;
-  }
-
-  #pinList.pin-list {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  }
+  .card { padding: 20px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  #extList.pin-list { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
 }
-
 @media (min-width: 1400px) {
-  .form-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-
-  #pinList.pin-list {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  }
+  .form-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  #extList.pin-list { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 }
 
 .row {
@@ -148,13 +228,16 @@ label.checkboxField input[type="checkbox"] {
   accent-color: #c7c7c7;
 }
 
-select {
-  appearance: none;
-}
+select { appearance: none; }
 
-input::placeholder {
-  color: #c7c7c7;
+/* Tidy selects in settings grid to avoid odd heights/alignment */
+.form-grid select {
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 10px;
+  line-height: 32px;
 }
+input::placeholder { color: #c7c7c7; }
 
 .buttons {
   display: flex;

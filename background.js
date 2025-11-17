@@ -1,5 +1,36 @@
 // background.js (service worker, MV3)
 
+const DEFAULT_PROFILE_NAME = 'Default';
+
+async function captureCurrentExtensionState() {
+  try {
+    const items = await chrome.management.getAll();
+    const state = {};
+    for (const item of items) {
+      if (item.id !== chrome.runtime.id && (item.type === 'extension' || item.type === 'theme' || item.type === 'packaged_app' || item.type === 'hosted_app')) {
+        state[item.id] = !!item.enabled;
+      }
+    }
+    return state;
+  } catch (e) {
+    return {};
+  }
+}
+
+async function ensureDefaultProfileExists() {
+  try {
+    const { profiles } = await chrome.storage.sync.get({ profiles: {} });
+    const map = profiles || {};
+    if (!map[DEFAULT_PROFILE_NAME]) {
+      const snapshot = await captureCurrentExtensionState();
+      map[DEFAULT_PROFILE_NAME] = snapshot;
+      await chrome.storage.sync.set({ profiles: map });
+    }
+  } catch (_) {
+    // ignore
+  }
+}
+
 // Read configured target extension ID
 async function getTargetId() {
   const { targetExtensionId } = await chrome.storage.sync.get("targetExtensionId");
@@ -174,9 +205,13 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     await chrome.storage.sync.set({ targetExtensionId: "" });
     chrome.runtime.openOptionsPage();
   }
+  await ensureDefaultProfileExists();
   await updateActionUI();
 });
-chrome.runtime.onStartup.addListener(updateActionUI);
+chrome.runtime.onStartup.addListener(async () => {
+  await ensureDefaultProfileExists();
+  await updateActionUI();
+});
 
 // React to storage changes
 chrome.storage.onChanged.addListener((changes, area) => {
