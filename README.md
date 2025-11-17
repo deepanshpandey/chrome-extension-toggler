@@ -19,10 +19,10 @@ A small Chrome extension that lets you toggle other extensions on and off quickl
 ### Quick Install & load (Developer / local install)
 
 1. Open Chrome and go to chrome://extensions.
-2. Turn on **Developer mode** (top-right toggle). On desktop Chrome, you'll see a switch labeled "Developer mode" — flip it on. This enables the "Load unpacked" button and extra diagnostics.
-3. Click "Load unpacked" and select the directory for this project (the folder that contains `manifest.json`).
-4. The extension should appear in your list. If it is a fresh install, the Options page may open to let you choose a target extension.
-Note: Developer mode is only required for loading unpacked extensions during development. It is not required for production installs from the Chrome Web Store.
+2. Turn on **Developer mode** (top-right toggle).
+3. Get the latest release from the Releases page for this repository.
+4. Drag the downloaded release (CRX or unzipped folder) onto the chrome://extensions page to install.
+Note: Developer mode is only required for loading unpacked extensions in our case.
 
 ## How to use
 
